@@ -1,36 +1,40 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
-import { Button, Card, Pagination, PageItem } from 'react-bootstrap';
+import { Button, Card } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import PageBar from './components/PaginationComp.js';
-import People from './components/People.js';
-import PaginationComp from './components/PaginationComp.js';
+import People from './components/People';
+import Paging from './components/Paging';
+import Averages from './components/Averages';
 
 function App() {
   // Information on every person
-  let [allPeople, setAllPeople] = useState([]);
-  let peopleInfo = {};
+  const [allPeople, setAllPeople] = useState([]); //optimize to fectch dictionary
+  let peopleInfoDic = {};
+  let sortedPeopleList = [];
 
-  let [pages, setPages] = useState([]);
-  let seperatePages = {};
-  let nextPage = 'https://swapi.dev/api/people/?page=1';
+
+  //Information gathering varibales
+  let nextPageSWAPI = 'https://swapi.dev/api/people/?page=1';
 
   //Pagination
-  let active = 1;
-  let items = [];
+  const [currentPage, setCurrentPage] = useState(1);
+  const [peoplePerPage, setPeoplePerPage] = useState(10);
+
+  let [loading, setLoading] = useState(false);
 
 
   useEffect(() => {
     console.log("fetching data");
 
+    //repalce with a loop
     async function fetchAllData(param) {
+      setLoading(true);
 
       let res = await fetch(param);
       let data = await res.json();
-      setPages(Math.ceil(data.count / 10));
 
-      nextPage = data.next;
+      nextPageSWAPI = data.next;
 
       setAllPeople(prev => [...prev, ...data.results.map(person => ({
         name: person.name,
@@ -41,18 +45,24 @@ function App() {
       })),
       ]);
 
-      if (nextPage !== null) {
-        fetchAllData(nextPage);
+      if (nextPageSWAPI !== null) {
+        fetchAllData(nextPageSWAPI);
+      } else {
+        setLoading(false);
       }
-      console.log("fetching data complete");
     }
 
-    fetchAllData(nextPage);
+    fetchAllData(nextPageSWAPI);
   }, [])
+
+  //change page function
+  const paginate = pageNumber => (
+    setCurrentPage(pageNumber)
+  )
 
   //generates a dictionary of names and their attributes needed
   for (let i = 0; i < allPeople.length; i++) {
-    peopleInfo[allPeople[i].name] = {
+    peopleInfoDic[allPeople[i].name] = {
       "gender": allPeople[i].gender,
       "hair_color": allPeople[i].hair_color,
       "height": allPeople[i].height,
@@ -61,54 +71,48 @@ function App() {
   }
 
   //creates the alphabeticalized list of names
-  var sortedNames = Object.keys(peopleInfo).sort();
+  var sortedNames = Object.keys(peopleInfoDic).sort();
 
   //creates the list of people for each page
-  for (let i = 1; i <= pages; i++) {
-    sortedNames.map((person, x) => {
-      if (x < 10 * i && x >= 10 * (i - 1)) {
-        seperatePages[i] = {
-          ...seperatePages[i],
-          [person]: peopleInfo[person]
-        }
-      }
-    })
-  }
+  sortedNames.map((person, x) => {
+    sortedPeopleList.push({
+      name: person,
+      gender: peopleInfoDic[person].gender,
+      hair_color: peopleInfoDic[person].hair_color,
+      height: peopleInfoDic[person].height,
+      mass: peopleInfoDic[person].mass
+    });
+  })
 
-  //sets the pages aviable for pagination
-  for (let i = 1; i <= pages; i++) {
-    items.push(
-      <Pagination.Item key={i} active={i === active}>
-        {i}
-      </Pagination.Item>
-    );
-  }
+  // getting the range for pagination
+  const indexOfLast = currentPage * peoplePerPage;
+  const indexOfFirst = indexOfLast - peoplePerPage;
+  const currentPeople = sortedPeopleList.slice(indexOfFirst, indexOfLast);
 
-  console.log(seperatePages);
+  //Finding the average of the people's heights and weights
+  let weights = []; let averageWeight = 0;
+  let heights = []; let averageHeight = 0;
+
+  currentPeople.map((person, i) => {
+    if (person.mass !== "unknown")
+      weights.push(parseFloat(person.mass, 10));
+    if (person.height !== "unknown")
+      heights.push(parseFloat(person.height, 10));
+  })
+
+  averageWeight = weights.reduce((a, b) => a + b, 0) / weights.length;
+  averageHeight = heights.reduce((a, b) => a + b, 0) / heights.length;
+
+  console.log(typeof averageWeight);
 
   return (
     <>
-      {/* <PaginationComp pages={pages} /> */}
-      <Pagination>{items}</Pagination>
-      {/* <People pageCompleted={seperatePages} page={active} /> */}
-
-      {/* {sortedNames.map((person, i) => { //make for loop that will loop through all people indexes, use page algorithm (index+10*page)
-        return (
-          loop through cards
-          <div key={i}>
-            <h2>{person}</h2>
-            <li>
-              {peopleInfo[person].gender},
-              {peopleInfo[person].hair_color},
-              {peopleInfo[person].height},
-              {peopleInfo[person].mass}
-            </li>
-          </div>
-          add each height and mass for total mass and height
-        )
-      })} */}
-
-
+      <div className="center-text">
+        <h1>SWAPI People</h1>
+      </div>
+      <Paging peoplePerPage={peoplePerPage} totalPeople={allPeople.length} paginate={paginate} loading={loading} />
+      <People people={currentPeople} loading={loading} />
+      <Averages averageWeight={averageWeight} averageHeight={averageHeight} loading={loading} />
     </>
   );
 

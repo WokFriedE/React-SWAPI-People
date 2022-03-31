@@ -1,33 +1,44 @@
 import React from 'react'
-import { Button, Card, Row, Col } from 'react-bootstrap';
+import { Card, Row, Spinner } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-export default function People({ pageCompleted, page }) {
-    //print pageCompleted
-    let people = pageCompleted[page];
+export default function People({ people, loading }) {
+
+    if (loading) {
+        return (
+            <div className='center'>
+                <Spinner animation='border' role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </Spinner>
+            </div>
+
+        )
+    }
+    //send a list of indexes that are part of the first page,
+    //use page as index and send list of indexes to PeopleCard
 
     return (
         <div>
-            {
-                Object.keys(people).map((person, x) => {
+            <Row className='center'>
+                {
+                    people.map((person, i) => {
+                        return (
+                            <Card style={{ width: '15rem', backgroundColor: 'rgb(63, 70, 70)', color: '#c5c9c8' }}>
+                                <Card.Body>
+                                    <Card.Title>{person.name}</Card.Title>
+                                    <Card.Text>
+                                        <li>gender:     {person.gender} </li>
+                                        <li>hair_color: {person.hair_color}</li>
+                                        <li>height:     {person.height}</li>
+                                        <li>mass:       {person.mass}</li>
+                                    </Card.Text>
+                                </Card.Body>
+                            </Card>
+                        )
+                    })
+                }
+            </Row>
 
-                    return (
-                        <Card style={{ width: '18rem' }}>
-                            <Card.Body>
-                                <Card.Title>{person}</Card.Title>
-                                <Card.Text>
-                                    <li>gender:     {people[person].gender}, </li>
-                                    <li>hair_color: {people[person].hair_color},</li>
-                                    <li>height:     {people[person].height},</li>
-                                    <li>mass:       {people[person].mass}</li>
-                                </Card.Text>
-                            </Card.Body>
-                        </Card>
-
-                    )
-
-                })
-            }
         </div>
     )
 }
