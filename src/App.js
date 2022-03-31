@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import People from './components/People';
 import Paging from './components/Paging';
 import Averages from './components/Averages';
+import Search from './components/Search';
 
 function App() {
   // Information on every person
@@ -22,7 +23,6 @@ function App() {
   const [peoplePerPage, setPeoplePerPage] = useState(10);
 
   let [loading, setLoading] = useState(false);
-
 
   useEffect(() => {
     console.log("fetching data");
@@ -103,14 +103,13 @@ function App() {
   averageWeight = weights.reduce((a, b) => a + b, 0) / weights.length;
   averageHeight = heights.reduce((a, b) => a + b, 0) / heights.length;
 
-  console.log(typeof averageWeight);
-
   return (
     <>
       <div className="center-text">
         <h1>SWAPI People</h1>
       </div>
       <Paging peoplePerPage={peoplePerPage} totalPeople={allPeople.length} paginate={paginate} loading={loading} />
+      <Search loading={loading} />
       <People people={currentPeople} loading={loading} />
       <Averages averageWeight={averageWeight} averageHeight={averageHeight} loading={loading} />
     </>

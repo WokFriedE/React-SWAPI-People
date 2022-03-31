@@ -19,16 +19,16 @@ export default function People({ people, loading }) {
 
     return (
         <div>
-            <Row className='center'>
+            <Row className='center' class='col-5'>
                 {
                     people.map((person, i) => {
                         return (
-                            <Card style={{ width: '15rem', backgroundColor: 'rgb(63, 70, 70)', color: '#c5c9c8' }}>
+                            <Card style={{ width: '15rem', backgroundColor: 'rgb(63, 70, 70)', color: '#c5c9c8', margin: '5px' }}>
                                 <Card.Body>
                                     <Card.Title>{person.name}</Card.Title>
                                     <Card.Text>
                                         <li>gender:     {person.gender} </li>
-                                        <li>hair_color: {person.hair_color}</li>
+                                        <li>hair color: {person.hair_color}</li>
                                         <li>height:     {person.height}</li>
                                         <li>mass:       {person.mass}</li>
                                     </Card.Text>
