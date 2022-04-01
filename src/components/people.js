@@ -1,19 +1,10 @@
 import React from 'react'
-import { Card, Row, Spinner } from 'react-bootstrap';
+import { Card, Row } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function People({ people, loading }) {
 
-    if (loading) {
-        return (
-            <div className='center'>
-                <Spinner animation='border' role="status">
-                    <span className="visually-hidden">Loading...</span>
-                </Spinner>
-            </div>
-
-        )
-    }
+    if (loading) return <></>
 
     return (
         <div>

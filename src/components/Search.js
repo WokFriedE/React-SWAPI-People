@@ -2,9 +2,7 @@ import React from 'react'
 
 export default function Search({ loading, searchQuery, setSearchQuery }) {
 
-    if (loading === true) {
-        return (<></>)
-    }
+    if (loading) return (<></>);
 
     return (
         <form className='center'>

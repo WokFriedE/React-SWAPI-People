@@ -86,6 +86,11 @@
   cursor: pointer;
 }
 
-.page-link {
+.center-load {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Georgia, 'Times New Roman', Times, serif;
   color: #61dafb;
+  margin: 10px;
 }

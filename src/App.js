@@ -7,6 +7,7 @@ import People from './components/People';
 import Paging from './components/Paging';
 import Averages from './components/Averages';
 import Search from './components/Search';
+import LoadingSplash from './components/LoadingSplash';
 
 function App() {
 
@@ -29,7 +30,7 @@ function App() {
 
     return people.filter((person) => {
       const personName = person.name.toLowerCase();
-      return personName.includes(query);
+      return personName.includes(query.toLowerCase());
     });
   };
 
@@ -44,6 +45,8 @@ function App() {
 
   //Information gathering varibales
   let nextPageSWAPI = 'https://swapi.dev/api/people/?page=1&format=json';
+  const [pagesLoaded, setPagesLoaded] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
 
   //Pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -78,6 +81,9 @@ function App() {
         })),
         ]);
 
+        setPagesLoaded(prev => prev + 1);
+        setTotalPages(Math.ceil(data.count / peoplePerPage));
+
         if (nextPageSWAPI !== null) {
           fetchAllData(nextPageSWAPI);
         } else {
@@ -92,6 +98,8 @@ function App() {
 
     fetchAllData(nextPageSWAPI);
   }, [])
+
+
   //===============================================================
   // Generating the list of people / required data for each person
   //===============================================================
@@ -151,6 +159,7 @@ function App() {
   averageWeight = weights.reduce((a, b) => a + b, 0) / weights.length;
   averageHeight = heights.reduce((a, b) => a + b, 0) / heights.length;
 
+
   //==========================================================
   // HTML Return
   //==========================================================
@@ -160,6 +169,7 @@ function App() {
       <div className="center-text">
         <h1>SWAPI People</h1>
       </div>
+      <LoadingSplash loading={loading} pagesLoaded={pagesLoaded} totalPages={totalPages} />
       <Paging peoplePerPage={peoplePerPage} totalPeople={filteredPeople.length} paginate={paginate} loading={loading} currentPage={currentPage} />
       <Search loading={loading} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <People people={currentPeople} loading={loading} />

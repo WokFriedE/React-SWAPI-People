@@ -3,9 +3,7 @@ import React from 'react'
 const PaginationComp = ({ peoplePerPage, totalPeople, paginate, loading, currentPage }) => {
     const pageNumbers = [];
 
-    if (loading) {
-        return <h3 className='center-text'>Loading...</h3>
-    }
+    if (loading) return <></>
 
     for (let i = 1; i <= Math.ceil(totalPeople / peoplePerPage); i++) {
         pageNumbers.push(i);

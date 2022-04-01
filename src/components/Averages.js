@@ -1,9 +1,7 @@
 import React from 'react'
 
 export default function Averages({ averageWeight, averageHeight, loading }) {
-    if (loading) {
-        return (<></>)
-    }
+    if (loading) return (<></>);
 
     return (
         <div className='average-contain'>
