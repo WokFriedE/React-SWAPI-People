@@ -12,7 +12,7 @@ export default function People({ people, loading }) {
                 {
                     people.map((person, i) => {
                         return (
-                            <Card style={{ width: '15rem', backgroundColor: 'rgb(63, 70, 70)', color: '#c5c9c8', margin: '5px' }} key={person.name}>
+                            <Card style={{ width: '16rem', backgroundColor: 'rgb(63, 70, 70)', color: '#c5c9c8', margin: '5px' }} key={person.name}>
                                 <Card.Body>
                                     <Card.Title>{person.name}</Card.Title>
                                     <Card.Text>

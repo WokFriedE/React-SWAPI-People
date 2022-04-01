@@ -8,6 +8,7 @@ import Paging from './components/Paging';
 import Averages from './components/Averages';
 import Search from './components/Search';
 import LoadingSplash from './components/LoadingSplash';
+import { First } from 'react-bootstrap/esm/PageItem';
 
 function App() {
 
@@ -104,29 +105,7 @@ function App() {
   // Generating the list of people / required data for each person
   //===============================================================
 
-  //generates a dictionary of names and their attributes needed
-  for (let i = 0; i < allPeople.length; i++) {
-    peopleInfoDic[allPeople[i].name] = {
-      "gender": allPeople[i].gender,
-      "hair_color": allPeople[i].hair_color,
-      "height": allPeople[i].height,
-      "mass": allPeople[i].mass
-    }
-  }
-
-  //creates the alphabeticalized list of names
-  var sortedNames = Object.keys(peopleInfoDic).sort();
-
-  //creates the list of people for each page
-  sortedNames.map((person, x) => {
-    sortedPeopleList.push({
-      "name": person,
-      "gender": peopleInfoDic[person].gender,
-      "hair_color": peopleInfoDic[person].hair_color,
-      "height": peopleInfoDic[person].height,
-      "mass": peopleInfoDic[person].mass
-    });
-  })
+  sortedPeopleList = allPeople.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
 
 
   //Search bar
