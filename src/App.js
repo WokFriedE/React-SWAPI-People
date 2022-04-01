@@ -33,9 +33,6 @@ function App() {
     });
   };
 
-  const checkExists = (person) => {
-    return (allPeople.indexOf(person.name) > -1);
-  }
 
   //==========================================================
   // Variable Assignment / Initialization 
@@ -62,7 +59,6 @@ function App() {
   useEffect(() => {
     console.log("fetching data");
 
-    //repalce with a loop
     async function fetchAllData(param) {
       if (pagesLoaded > totalPages) return;
 
@@ -105,6 +101,7 @@ function App() {
   // Generating the list of people / required data for each person
   //===============================================================
 
+  //Sorts the people by name
   const sortedPeopleList = allPeople.sort((first, sec) => (first.name > sec.name) ? 1 : ((sec.name > first.name) ? -1 : 0));
 
   //Search bar
@@ -116,10 +113,11 @@ function App() {
   const indexOfFirst = indexOfLast - peoplePerPage;
   const currentPeople = filteredPeople.slice(indexOfFirst, indexOfLast);
 
-  //Finding the average of the people's heights and weights
+  //Creates variables for the averages of the people's heights and weights
   let weights = []; let averageWeight = 0;
   let heights = []; let averageHeight = 0;
 
+  //Finding the numbers of the people's heights and weights
   currentPeople.map((person, i) => {
     if (person.mass !== "unknown") {
       let weight = person.mass.replace(",", "");
@@ -131,6 +129,7 @@ function App() {
     }
   })
 
+  //Finding the averages of the people's heights and weights
   averageWeight = weights.reduce((a, b) => a + b, 0) / weights.length;
   averageHeight = heights.reduce((a, b) => a + b, 0) / heights.length;
 
@@ -148,7 +147,6 @@ function App() {
       <Search loading={loading} searchQuery={searchQuery} setSearchQuery={setSearchQuery} paginate={paginate} />
       <People loading={loading} people={currentPeople} />
       <Averages loading={loading} averageWeight={averageWeight} averageHeight={averageHeight} />
-
     </>
   );
 

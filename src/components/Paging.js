@@ -6,14 +6,17 @@ const PaginationComp = ({ peoplePerPage, totalPeople, paginate, loading, current
     const fromCurrent = 1;
     const maxPages = Math.ceil(totalPeople / peoplePerPage);
 
+    //if loading show nothing
     if (loading) return <></>
 
+    //Function to create pagination items with coorect attributes
     const createPaginationItem = (i) => {
         return (
             <Pagination.Item
                 key={i}
                 active={currentPage === i}
-                onClick={() => paginate(i)}>
+                onClick={() => paginate(i)}
+            >
                 {i}
             </Pagination.Item>
         )
@@ -37,8 +40,8 @@ const PaginationComp = ({ peoplePerPage, totalPeople, paginate, loading, current
 
     //Returns the list of pagination items
     return (
-        <div className="pagination-style">
-            <Pagination key={'People'}>
+        <div>
+            <Pagination key={'People'} className="pagination-style">
                 <Pagination.First onClick={() => paginate(1)} />
                 <Pagination.Prev onClick={() => paginate(currentPage - 1)} />
                 {paginationItems}
