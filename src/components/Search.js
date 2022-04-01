@@ -5,7 +5,7 @@ export default function Search({ loading, searchQuery, setSearchQuery }) {
     if (loading) return (<></>);
 
     return (
-        <form className='center'>
+        <div className='center'>
             <input
                 onSubmit={e => { e.preventDefault(); }}
                 value={searchQuery}
@@ -16,6 +16,6 @@ export default function Search({ loading, searchQuery, setSearchQuery }) {
                 placeholder="Search Person..."
                 className='input-style'
             />
-        </form>
+        </div>
     )
 }

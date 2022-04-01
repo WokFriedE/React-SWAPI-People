@@ -8,7 +8,6 @@ import Paging from './components/Paging';
 import Averages from './components/Averages';
 import Search from './components/Search';
 import LoadingSplash from './components/LoadingSplash';
-import { First } from 'react-bootstrap/esm/PageItem';
 
 function App() {
 
@@ -40,9 +39,7 @@ function App() {
   //==========================================================
 
   // Information on every person
-  const [allPeople, setAllPeople] = useState([]); //optimize to fectch dictionary
-  let peopleInfoDic = {};
-  let sortedPeopleList = [];
+  const [allPeople, setAllPeople] = useState([]);
 
   //Information gathering varibales
   let nextPageSWAPI = 'https://swapi.dev/api/people/?page=1&format=json';
@@ -64,6 +61,8 @@ function App() {
 
     //repalce with a loop
     async function fetchAllData(param) {
+      if (pagesLoaded > totalPages) return;
+
       try {
         setLoading(true);
         let res = await fetch(param);
@@ -105,13 +104,10 @@ function App() {
   // Generating the list of people / required data for each person
   //===============================================================
 
-  sortedPeopleList = allPeople.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-
+  const sortedPeopleList = allPeople.sort((first, sec) => (first.name > sec.name) ? 1 : ((sec.name > first.name) ? -1 : 0));
 
   //Search bar
-  const { search } = window.location;
-  const query = new URLSearchParams(search).get('s');
-  const [searchQuery, setSearchQuery] = useState(query || '');
+  const [searchQuery, setSearchQuery] = useState('');
   const filteredPeople = filterPeople(sortedPeopleList, searchQuery);
 
 
