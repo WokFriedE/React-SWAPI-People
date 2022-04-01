@@ -4,8 +4,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function People({ people, loading }) {
 
+    //if loading show nothing
     if (loading) return <></>
 
+    //creates the cards for each person with relevant information, using bootstrap cards
     return (
         <div>
             <Row className='center'>
@@ -18,8 +20,8 @@ export default function People({ people, loading }) {
                                     <Card.Text>
                                         <li>gender:     {person.gender} </li>
                                         <li>hair color: {person.hair_color}</li>
-                                        <li>height:     {person.height}</li>
                                         <li>mass:       {person.mass}</li>
+                                        <li>height:     {person.height}</li>
                                     </Card.Text>
                                 </Card.Body>
                             </Card>

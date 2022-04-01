@@ -1,8 +1,11 @@
 import React from 'react'
 
 export default function Averages({ averageWeight, averageHeight, loading }) {
+
+    //if loading show nothing
     if (loading) return (<></>);
 
+    //sends calculated weights with rounding to the page
     return (
         <div className='average-contain'>
             <h3>
