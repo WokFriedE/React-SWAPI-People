@@ -1,18 +1,23 @@
 import React from 'react'
 
-export default function Search(loading) {
+export default function Search({ loading, searchQuery, setSearchQuery }) {
 
-    if (loading) {
+    if (loading === true) {
         return (<></>)
     }
 
     return (
-        <div className='center'>
+        <form className='center'>
             <input
-                className='search-bar'
+                onSubmit={e => { e.preventDefault(); }}
+                value={searchQuery}
+                onInput={(e) => setSearchQuery(e.target.value)}
+                name="s"
+                id="person-search"
                 type="text"
                 placeholder="Search Person..."
+                className='input-style'
             />
-        </div>
+        </form>
     )
 }

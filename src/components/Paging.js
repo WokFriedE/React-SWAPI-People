@@ -1,6 +1,6 @@
 import React from 'react'
 
-const PaginationComp = ({ peoplePerPage, totalPeople, paginate, loading }) => {
+const PaginationComp = ({ peoplePerPage, totalPeople, paginate, loading, currentPage }) => {
     const pageNumbers = [];
 
     if (loading) {
@@ -12,23 +12,23 @@ const PaginationComp = ({ peoplePerPage, totalPeople, paginate, loading }) => {
     }
 
     return (
-        <nav className="center">
+        <nav className="pagination-style">
             <ul className="pagination">
                 <li key="prev">
-                    <a onClick={() => paginate(1)} href="!#" className="page-link">
-                        {"<<"}
+                    <a onClick={() => paginate(currentPage - 1)} className="page-link">
+                        {"<"}
                     </a>
                 </li>
                 {pageNumbers.map(number => (
                     <li key={number} className="page-item" >
-                        <a onClick={() => paginate(number)} href="!#" className="page-link">
+                        <a onClick={() => paginate(number)} className="page-link">
                             {number}
                         </a>
                     </li>
                 ))}
-                <li key="last">
-                    <a onClick={() => paginate(pageNumbers[pageNumbers.length - 1])} href="!#" className="page-link">
-                        {">>"}
+                <li key="next">
+                    <a onClick={() => paginate(currentPage + 1)} className="page-link">
+                        {">"}
                     </a>
                 </li>
             </ul>

@@ -49,6 +49,7 @@
   justify-content: center;
   align-items: center;
   color: #c5c9c8;
+  font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
 .basic {
@@ -64,4 +65,27 @@
   color: azure;
   background-color: darkgrey;
   text-align: center;
+}
+
+.input-style {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+  padding: 4px;
+  border: 1px solid #3d555c;
+  font-family: "Roboto", sans-serif;
+  transition: background-color 0.3s ease-in-out;
+  outline: none;
+}
+
+.pagination-style {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.page-link {
+  color: #61dafb;
 }

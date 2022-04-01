@@ -14,8 +14,6 @@ export default function People({ people, loading }) {
 
         )
     }
-    //send a list of indexes that are part of the first page,
-    //use page as index and send list of indexes to PeopleCard
 
     return (
         <div>
