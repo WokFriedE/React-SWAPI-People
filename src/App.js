@@ -142,7 +142,7 @@ function App() {
   return (
     <>
       <div className="center-text">
-        <h1>SWAPI People</h1>
+        <h1>Star Wars People</h1>
       </div>
       <LoadingSplash loading={loading} pagesLoaded={pagesLoaded} totalPages={totalPages} />
       <Paging peoplePerPage={peoplePerPage} totalPeople={filteredPeople.length} paginate={paginate} loading={loading} currentPage={currentPage} />
