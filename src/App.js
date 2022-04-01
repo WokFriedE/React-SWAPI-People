@@ -1,12 +1,12 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
-import { Button, Card } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import People from './components/People';
 import Paging from './components/Paging';
 import Averages from './components/Averages';
 import Search from './components/Search';
+import LoadingSplash from './components/LoadingSplash';
 
 function App() {
 
@@ -29,21 +29,25 @@ function App() {
 
     return people.filter((person) => {
       const personName = person.name.toLowerCase();
-      return personName.includes(query);
+      return personName.includes(query.toLowerCase());
     });
   };
+
+  const checkExists = (person) => {
+    return (allPeople.indexOf(person.name) > -1);
+  }
 
   //==========================================================
   // Variable Assignment / Initialization 
   //==========================================================
 
   // Information on every person
-  const [allPeople, setAllPeople] = useState([]); //optimize to fectch dictionary
-  let peopleInfoDic = {};
-  let sortedPeopleList = [];
+  const [allPeople, setAllPeople] = useState([]);
 
   //Information gathering varibales
   let nextPageSWAPI = 'https://swapi.dev/api/people/?page=1&format=json';
+  const [pagesLoaded, setPagesLoaded] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
 
   //Pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -60,12 +64,12 @@ function App() {
 
     //repalce with a loop
     async function fetchAllData(param) {
+      if (pagesLoaded > totalPages) return;
+
       try {
         setLoading(true);
         let res = await fetch(param);
         let data = await res.json();
-
-        console.log(param);
 
         nextPageSWAPI = data.next;
 
@@ -77,6 +81,9 @@ function App() {
           mass: person.mass
         })),
         ]);
+
+        setPagesLoaded(prev => prev + 1);
+        setTotalPages(Math.ceil(data.count / peoplePerPage));
 
         if (nextPageSWAPI !== null) {
           fetchAllData(nextPageSWAPI);
@@ -92,41 +99,17 @@ function App() {
 
     fetchAllData(nextPageSWAPI);
   }, [])
+
+
   //===============================================================
   // Generating the list of people / required data for each person
   //===============================================================
 
-  //generates a dictionary of names and their attributes needed
-  for (let i = 0; i < allPeople.length; i++) {
-    peopleInfoDic[allPeople[i].name] = {
-      "gender": allPeople[i].gender,
-      "hair_color": allPeople[i].hair_color,
-      "height": allPeople[i].height,
-      "mass": allPeople[i].mass
-    }
-  }
-
-  //creates the alphabeticalized list of names
-  var sortedNames = Object.keys(peopleInfoDic).sort();
-
-  //creates the list of people for each page
-  sortedNames.map((person, x) => {
-    sortedPeopleList.push({
-      "name": person,
-      "gender": peopleInfoDic[person].gender,
-      "hair_color": peopleInfoDic[person].hair_color,
-      "height": peopleInfoDic[person].height,
-      "mass": peopleInfoDic[person].mass
-    });
-  })
-
+  const sortedPeopleList = allPeople.sort((first, sec) => (first.name > sec.name) ? 1 : ((sec.name > first.name) ? -1 : 0));
 
   //Search bar
-  const { search } = window.location;
-  const query = new URLSearchParams(search).get('s');
-  const [searchQuery, setSearchQuery] = useState(query || '');
+  const [searchQuery, setSearchQuery] = useState('');
   const filteredPeople = filterPeople(sortedPeopleList, searchQuery);
-
 
   // getting the range for pagination
   const indexOfLast = currentPage * peoplePerPage;
@@ -158,12 +141,13 @@ function App() {
   return (
     <>
       <div className="center-text">
-        <h1>SWAPI People</h1>
+        <h1>Star Wars People</h1>
       </div>
-      <Paging peoplePerPage={peoplePerPage} totalPeople={filteredPeople.length} paginate={paginate} loading={loading} currentPage={currentPage} />
-      <Search loading={loading} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-      <People people={currentPeople} loading={loading} />
-      <Averages averageWeight={averageWeight} averageHeight={averageHeight} loading={loading} />
+      <LoadingSplash loading={loading} pagesLoaded={pagesLoaded} totalPages={totalPages} />
+      <Paging loading={loading} peoplePerPage={peoplePerPage} totalPeople={filteredPeople.length} paginate={paginate} currentPage={currentPage} />
+      <Search loading={loading} searchQuery={searchQuery} setSearchQuery={setSearchQuery} paginate={paginate} />
+      <People loading={loading} people={currentPeople} />
+      <Averages loading={loading} averageWeight={averageWeight} averageHeight={averageHeight} />
 
     </>
   );

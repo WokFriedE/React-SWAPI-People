@@ -1,23 +1,27 @@
 import React from 'react'
 
-export default function Search({ loading, searchQuery, setSearchQuery }) {
+export default function Search({ loading, searchQuery, setSearchQuery, paginate }) {
 
-    if (loading === true) {
-        return (<></>)
+    if (loading) return (<></>);
+
+    const onChange = (e) => {
+        setSearchQuery(e.target.value);
+        paginate(1);
     }
 
     return (
-        <form className='center'>
+        <div className='center'>
             <input
                 onSubmit={e => { e.preventDefault(); }}
                 value={searchQuery}
-                onInput={(e) => setSearchQuery(e.target.value)}
+                onInput={(e) => onChange(e)}
                 name="s"
                 id="person-search"
                 type="text"
                 placeholder="Search Person..."
                 className='input-style'
+                autoComplete='off'
             />
-        </form>
+        </div>
     )
 }

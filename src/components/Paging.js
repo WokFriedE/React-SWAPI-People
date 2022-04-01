@@ -1,39 +1,51 @@
 import React from 'react'
+import { Pagination } from 'react-bootstrap';
 
 const PaginationComp = ({ peoplePerPage, totalPeople, paginate, loading, currentPage }) => {
-    const pageNumbers = [];
+    const paginationItems = [];
+    const fromCurrent = 1;
+    const maxPages = Math.ceil(totalPeople / peoplePerPage);
 
-    if (loading) {
-        return <h3 className='center-text'>Loading...</h3>
+    if (loading) return <></>
+
+    const createPaginationItem = (i) => {
+        return (
+            <Pagination.Item
+                key={i}
+                active={currentPage === i}
+                onClick={() => paginate(i)}>
+                {i}
+            </Pagination.Item>
+        )
     }
 
-    for (let i = 1; i <= Math.ceil(totalPeople / peoplePerPage); i++) {
-        pageNumbers.push(i);
+    //Adds ellipses to the pagination if center has more than 3 pages
+    if (currentPage > fromCurrent + 1) {
+        paginationItems.push(createPaginationItem(1));
+        paginationItems.push(<Pagination.Ellipsis key={'ellipsis-start'} />);
+    }
+    for (let i = currentPage - fromCurrent; i <= currentPage + fromCurrent; i++) {
+        if (i > 0 && i <= maxPages) {
+            paginationItems.push(createPaginationItem(i));
+        }
+    }
+    if (currentPage < maxPages - fromCurrent) {
+        paginationItems.push(<Pagination.Ellipsis key={'ellipsis-end'} />);
+        paginationItems.push(createPaginationItem(maxPages));
     }
 
+
+    //Returns the list of pagination items
     return (
-        <nav className="pagination-style">
-            <ul className="pagination">
-                <li key="prev">
-                    <a onClick={() => paginate(currentPage - 1)} className="page-link">
-                        {"<"}
-                    </a>
-                </li>
-                {pageNumbers.map(number => (
-                    <li key={number} className="page-item" >
-                        <a onClick={() => paginate(number)} className="page-link">
-                            {number}
-                        </a>
-                    </li>
-                ))}
-                <li key="next">
-                    <a onClick={() => paginate(currentPage + 1)} className="page-link">
-                        {">"}
-                    </a>
-                </li>
-            </ul>
-        </nav>
-
+        <div className="pagination-style">
+            <Pagination key={'People'}>
+                <Pagination.First onClick={() => paginate(1)} />
+                <Pagination.Prev onClick={() => paginate(currentPage - 1)} />
+                {paginationItems}
+                <Pagination.Next onClick={() => paginate(currentPage + 1)} />
+                <Pagination.Last onClick={() => paginate(maxPages)} />
+            </Pagination>
+        </div>
     )
 }
 
