@@ -12,7 +12,7 @@ export default function LoadingSplash({ loading, pagesLoaded, totalPages }) {
                         <span className="visually-hidden">Loading...</span>
                     </Spinner>
                 </div>
-                <h3 className='center-load'>=== {pagesLoaded}/{totalPages}===</h3>
+                <h3 className='center-load'>=== {pagesLoaded}/{totalPages} Pages ===</h3>
             </div>
         )
     }

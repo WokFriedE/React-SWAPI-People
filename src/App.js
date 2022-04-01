@@ -110,7 +110,6 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const filteredPeople = filterPeople(sortedPeopleList, searchQuery);
 
-
   // getting the range for pagination
   const indexOfLast = currentPage * peoplePerPage;
   const indexOfFirst = indexOfLast - peoplePerPage;
@@ -134,6 +133,7 @@ function App() {
   averageWeight = weights.reduce((a, b) => a + b, 0) / weights.length;
   averageHeight = heights.reduce((a, b) => a + b, 0) / heights.length;
 
+  console.log(currentPage);
 
   //==========================================================
   // HTML Return
@@ -146,7 +146,7 @@ function App() {
       </div>
       <LoadingSplash loading={loading} pagesLoaded={pagesLoaded} totalPages={totalPages} />
       <Paging peoplePerPage={peoplePerPage} totalPeople={filteredPeople.length} paginate={paginate} loading={loading} currentPage={currentPage} />
-      <Search loading={loading} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+      <Search loading={loading} searchQuery={searchQuery} setSearchQuery={setSearchQuery} paginate={paginate} />
       <People people={currentPeople} loading={loading} />
       <Averages averageWeight={averageWeight} averageHeight={averageHeight} loading={loading} />
 
