@@ -1,6 +1,5 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
-import { Button, Card } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import People from './components/People';
@@ -33,6 +32,10 @@ function App() {
       return personName.includes(query.toLowerCase());
     });
   };
+
+  const checkExists = (person) => {
+    return (allPeople.indexOf(person.name) > -1);
+  }
 
   //==========================================================
   // Variable Assignment / Initialization 
@@ -67,8 +70,6 @@ function App() {
         setLoading(true);
         let res = await fetch(param);
         let data = await res.json();
-
-        console.log(param);
 
         nextPageSWAPI = data.next;
 
@@ -133,8 +134,6 @@ function App() {
   averageWeight = weights.reduce((a, b) => a + b, 0) / weights.length;
   averageHeight = heights.reduce((a, b) => a + b, 0) / heights.length;
 
-  console.log(currentPage);
-
   //==========================================================
   // HTML Return
   //==========================================================
@@ -145,10 +144,10 @@ function App() {
         <h1>Star Wars People</h1>
       </div>
       <LoadingSplash loading={loading} pagesLoaded={pagesLoaded} totalPages={totalPages} />
-      <Paging peoplePerPage={peoplePerPage} totalPeople={filteredPeople.length} paginate={paginate} loading={loading} currentPage={currentPage} />
+      <Paging loading={loading} peoplePerPage={peoplePerPage} totalPeople={filteredPeople.length} paginate={paginate} currentPage={currentPage} />
       <Search loading={loading} searchQuery={searchQuery} setSearchQuery={setSearchQuery} paginate={paginate} />
-      <People people={currentPeople} loading={loading} />
-      <Averages averageWeight={averageWeight} averageHeight={averageHeight} loading={loading} />
+      <People loading={loading} people={currentPeople} />
+      <Averages loading={loading} averageWeight={averageWeight} averageHeight={averageHeight} />
 
     </>
   );
