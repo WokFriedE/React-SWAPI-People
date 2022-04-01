@@ -2,7 +2,13 @@
 
 Libraries used: React, React-Bootstrap
 
+Node modules not included: use "npm install" to use "npm start" and use website
+
 Icon source: https://icon-icons.com/icon/scifi-starwars-darth/157471
+
+
+======================================================================================
+
 
 Essentially this is a challenge presented for front-end development. 
 The goal is to utilize SWAPI with React and produce an output given a character's name.
