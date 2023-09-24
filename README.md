@@ -1,5 +1,3 @@
-# twg-challenge
-
 Libraries used: React, React-Bootstrap
 
 Node modules not included: use "npm install" to use "npm start" and use website
@@ -8,7 +6,7 @@ Icon source: https://icon-icons.com/icon/scifi-starwars-darth/157471
 
 
 ======================================================================
-
+# Original Challenge:
 
 Essentially this is a challenge presented for front-end development. 
 The goal is to utilize SWAPI with React and produce an output given a character's name.
@@ -30,5 +28,3 @@ Luke SkywalkerGender: Male Hair Color: Blond Height: 172 Mass: 77
 C-3POGender: n/a Hair Color: n/a Height: 167 Mass: 75
 
 Average Height: 170Average Mass: 76
-
-For any questions about project specifications or requirements
